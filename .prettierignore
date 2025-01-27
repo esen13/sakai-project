@@ -1,0 +1,16 @@
+# Ignore artifacts:
+public
+deploy
+build
+coverage
+node_modules
+.next
+/.next/
+/out/
+
+.idea
+.vscode
+tests/fixtures
+.github/
+dist/
+README.md
