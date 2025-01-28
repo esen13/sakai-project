@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { Suspense, useState } from 'react'
 
-import { createClient } from '@/utils/supabase/client'
 import { Button } from '@/components/ui/button'
+import { createClient } from '@/utils/supabase/client'
 import { Loader2 } from 'lucide-react'
 import Image from 'next/image'
 
@@ -42,24 +42,26 @@ export default function GoogleSignin() {
 	}
 
 	return (
-		<Button
-			type="button"
-			variant="outline"
-			onClick={signInWithGoogle}
-			disabled={isGoogleLoading}
-		>
-			{isGoogleLoading ? (
-				<Loader2 className="mr-2 size-4 animate-spin" />
-			) : (
-				<Image
-					src="https://authjs.dev/img/providers/google.svg"
-					alt="Google logo"
-					width={20}
-					height={20}
-					className="mr-2"
-				/>
-			)}{' '}
-			Sign in with Google
-		</Button>
+		<Suspense fallback={<div>Loading button...</div>}>
+			<Button
+				type="button"
+				variant="outline"
+				onClick={signInWithGoogle}
+				disabled={isGoogleLoading}
+			>
+				{isGoogleLoading ? (
+					<Loader2 className="mr-2 size-4 animate-spin" />
+				) : (
+					<Image
+						src="https://authjs.dev/img/providers/google.svg"
+						alt="Google logo"
+						width={20}
+						height={20}
+						className="mr-2"
+					/>
+				)}{' '}
+				Sign in with Google
+			</Button>
+		</Suspense>
 	)
 }
