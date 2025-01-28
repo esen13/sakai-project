@@ -1,4 +1,13 @@
-export default async function handler(req, res) {
+export default async function handler(
+	req: { method: string; body: { message: any } },
+	res: {
+		status: (arg0: number) => {
+			(): any
+			new (): any
+			json: { (arg0: { response?: any; error?: any }): any; new (): any }
+		}
+	}
+) {
 	if (req.method === 'POST') {
 		try {
 			const { message } = req.body
@@ -19,9 +28,12 @@ export default async function handler(req, res) {
 					}
 					return res.status(500).json({ error: response.error })
 				})
-				.catch(err => res.status(500).json({ error: err.message }))
-		} catch (error) {
-			return res.status(500).json({ error: error.message })
+				.catch((err: Error) => res.status(500).json({ error: err.message }))
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				return res.status(500).json({ error: error.message })
+			}
+			return res.status(500).json({ error: 'An unknown error occurred' })
 		}
 	}
 	return res.status(405).json({ error: 'Method not allowed' })

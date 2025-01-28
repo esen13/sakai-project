@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase/client'
 
 export default async function handler(req, res) {
 	if (req.method === 'DELETE') {
@@ -8,7 +8,11 @@ export default async function handler(req, res) {
 			return res.status(400).json({ error: 'City is required' })
 		}
 
-		const { error } = await supabase.from('ppxl-zip-codes').delete().eq('city', city).throwOnError()
+		const { error } = await supabase
+			.from('ppxl-zip-codes')
+			.delete()
+			.eq('city', city)
+			.throwOnError()
 
 		if (error) {
 			return res.status(500).json({ error: error.message })

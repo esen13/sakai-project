@@ -1084,6 +1084,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@supabase/ssr@npm:^0.5.2":
+  version: 0.5.2
+  resolution: "@supabase/ssr@npm:0.5.2"
+  dependencies:
+    "@types/cookie": "npm:^0.6.0"
+    cookie: "npm:^0.7.0"
+  peerDependencies:
+    "@supabase/supabase-js": ^2.43.4
+  checksum: 10c0/5dcf74d05771d1e88225fbc782e2594d8b23d9b5c9303009ffe5ebedf68293aa033ece4d4a45a530933a5f282cc770a43cfd5e727e07a6609883ffa8b488bbfd
+  languageName: node
+  linkType: hard
+
 "@supabase/storage-js@npm:2.7.1":
   version: 2.7.1
   resolution: "@supabase/storage-js@npm:2.7.1"
@@ -1264,6 +1276,13 @@ __metadata:
     postcss: "npm:^8.4.41"
     tailwindcss: "npm:4.0.0"
   checksum: 10c0/a605393e9939026d8b723f676dfe5ba0bfcfc8dc3c3c26329890b0f9119b1f78ef9c8c6983bdeecbd5dc88bd2700a31f64ebdd386ac4c973ba789237baa8d55c
+  languageName: node
+  linkType: hard
+
+"@types/cookie@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "@types/cookie@npm:0.6.0"
+  checksum: 10c0/5b326bd0188120fb32c0be086b141b1481fec9941b76ad537f9110e10d61ee2636beac145463319c71e4be67a17e85b81ca9e13ceb6e3bb63b93d16824d6c149
   languageName: node
   linkType: hard
 
@@ -1449,6 +1468,33 @@ __metadata:
     "@typescript-eslint/types": "npm:8.21.0"
     eslint-visitor-keys: "npm:^4.2.0"
   checksum: 10c0/b3f1412f550e35c0d7ae0410db616951116b365167539f9b85710d8bc2b36b322c5e637caee84cc1ae5df8f1d961880250d52ffdef352b31e5bdbef74ba6fea9
+  languageName: node
+  linkType: hard
+
+"@vercel/speed-insights@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@vercel/speed-insights@npm:1.1.0"
+  peerDependencies:
+    "@sveltejs/kit": ^1 || ^2
+    next: ">= 13"
+    react: ^18 || ^19 || ^19.0.0-rc
+    svelte: ">= 4"
+    vue: ^3
+    vue-router: ^4
+  peerDependenciesMeta:
+    "@sveltejs/kit":
+      optional: true
+    next:
+      optional: true
+    react:
+      optional: true
+    svelte:
+      optional: true
+    vue:
+      optional: true
+    vue-router:
+      optional: true
+  checksum: 10c0/2bfaef328b30b1d8a5a1b65e201875a78076b0223f6719a4cac04dd24e9f336da8f1648f8b33b0fe05624f25f957b67f46b7d6c3c290ac53c6ac3dac4540922a
   languageName: node
   linkType: hard
 
@@ -1865,6 +1911,13 @@ __metadata:
   version: 0.0.1
   resolution: "concat-map@npm:0.0.1"
   checksum: 10c0/c996b1cfdf95b6c90fee4dae37e332c8b6eb7d106430c17d538034c0ad9a1630cb194d2ab37293b1bdd4d779494beee7786d586a50bd9376fd6f7bcc2bd4c98f
+  languageName: node
+  linkType: hard
+
+"cookie@npm:^0.7.0":
+  version: 0.7.2
+  resolution: "cookie@npm:0.7.2"
+  checksum: 10c0/9596e8ccdbf1a3a88ae02cf5ee80c1c50959423e1022e4e60b91dd87c622af1da309253d8abdb258fb5e3eacb4f08e579dc58b4897b8087574eee0fd35dfa5d2
   languageName: node
   linkType: hard
 
@@ -4076,11 +4129,13 @@ __metadata:
     "@radix-ui/react-tooltip": "npm:^1.1.7"
     "@stripe/react-stripe-js": "npm:^3"
     "@stripe/stripe-js": "npm:^5"
+    "@supabase/ssr": "npm:^0.5.2"
     "@supabase/supabase-js": "npm:^2"
     "@tailwindcss/postcss": "npm:^4"
     "@types/node": "npm:^20"
     "@types/react": "npm:^19"
     "@types/react-dom": "npm:^19"
+    "@vercel/speed-insights": "npm:^1.1.0"
     axios: "npm:^1"
     axios-cache-interceptor: "npm:^1"
     caniuse-lite: "npm:^1"

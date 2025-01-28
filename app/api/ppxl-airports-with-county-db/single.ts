@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase/client'
 
 export default async function handler(req, res) {
 	if (req.method === 'GET') {
@@ -8,7 +8,10 @@ export default async function handler(req, res) {
 			return res.status(400).json({ error: 'Airport Name is required' })
 		}
 
-		const { data, error } = await supabase.from('ppxl-airports-with-county').select('*').eq('airportName', airportName)
+		const { data, error } = await supabase
+			.from('ppxl-airports-with-county')
+			.select('*')
+			.eq('airportName', airportName)
 
 		if (error) {
 			return res.status(500).json({ error: error.message })
