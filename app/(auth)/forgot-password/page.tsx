@@ -69,63 +69,65 @@ function ForgotPasswordContent() {
 		}
 	}
 	return (
-		<Card className="w-[380px]">
-			<CardHeader>
-				<CardTitle>Password Reset</CardTitle>
-				<CardDescription>
-					Enter your email address to reset your password
-				</CardDescription>
-			</CardHeader>
-			<CardContent>
-				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(handleSubmit)}
-						className="flex flex-col gap-2"
-					>
-						<FormField
-							control={form.control}
-							name="email"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Email</FormLabel>
-									<FormControl>
-										<Input {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
+		<main className="flex justify-center items-center min-h-screen">
+			<Card className="w-[380px]">
+				<CardHeader>
+					<CardTitle>Password Reset</CardTitle>
+					<CardDescription>
+						Enter your email address to reset your password
+					</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<Form {...form}>
+						<form
+							onSubmit={form.handleSubmit(handleSubmit)}
+							className="flex flex-col gap-2"
+						>
+							<FormField
+								control={form.control}
+								name="email"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Email</FormLabel>
+										<FormControl>
+											<Input {...field} />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							{serverError && (
+								<p className="text-red-500 text-sm mt-2">{serverError}</p>
 							)}
-						/>
-						{serverError && (
-							<p className="text-red-500 text-sm mt-2">{serverError}</p>
-						)}
-						<Button type="submit" disabled={isLoading}>
-							{isLoading ? (
-								<>
-									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-									Please wait
-								</>
-							) : (
-								'Forget password'
-							)}
-						</Button>
-					</form>
-				</Form>
-			</CardContent>
-			<CardFooter className="flex flex-col gap-2">
-				<div className="text-muted-foreground text-sm">
-					Remember your password?{' '}
-					<Link href="/login" className="underline">
-						Sign in
-					</Link>
-				</div>
-				<div className="text-muted-foreground text-sm">
-					Don't have an account?{' '}
-					<Link href="/register" className="underline">
-						Sign up
-					</Link>
-				</div>
-			</CardFooter>
-		</Card>
+							<Button type="submit" disabled={isLoading}>
+								{isLoading ? (
+									<>
+										<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+										Please wait
+									</>
+								) : (
+									'Forget password'
+								)}
+							</Button>
+						</form>
+					</Form>
+				</CardContent>
+				<CardFooter className="flex flex-col gap-2">
+					<div className="text-muted-foreground text-sm">
+						Remember your password?{' '}
+						<Link href="/login" className="underline">
+							Sign in
+						</Link>
+					</div>
+					<div className="text-muted-foreground text-sm">
+						Don't have an account?{' '}
+						<Link href="/register" className="underline">
+							Sign up
+						</Link>
+					</div>
+				</CardFooter>
+			</Card>
+		</main>
 	)
 }
 
