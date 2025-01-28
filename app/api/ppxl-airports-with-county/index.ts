@@ -7,8 +7,11 @@ export default async function handler(req, res) {
 
 			const options = {
 				method: 'POST',
-				headers: { Authorization: `Bearer ${process.env.PPXL_KEY}`, 'Content-Type': 'application/json' },
-				body: `{"model":"llama-3.1-sonar-small-128k-online","messages":[{"role":"system","content":"You are an assistant who helps the user find county and popular city and nearby airports within a 50 mile radius. Always return responses strictly in JSON format with the following keys: county with distance, airport with link and distance. Ensure all responses are structured as a one list of JSON objects. If data is insufficient, use available information but maintain the specified structure."},{"role":"user","content":"${message}"}]}`
+				headers: {
+					Authorization: `Bearer ${process.env.PPXL_KEY}`,
+					'Content-Type': 'application/json'
+				},
+				body: `{"model":"sonar","messages":[{"role":"system","content":"You are an assistant who helps the user find county and popular city and nearby airports within a 50 mile radius. Always return responses strictly in JSON format with the following keys: county with distance, airport with link and distance. Ensure all responses are structured as a one list of JSON objects. If data is insufficient, use available information but maintain the specified structure."},{"role":"user","content":"${message}"}]}`
 			}
 			await fetch('https://api.perplexity.ai/chat/completions', options)
 				.then(response => response.json())

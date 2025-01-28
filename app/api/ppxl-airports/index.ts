@@ -5,8 +5,11 @@ export default async function handler(req, res) {
 
 			const options = {
 				method: 'POST',
-				headers: { Authorization: `Bearer ${process.env.PPXL_KEY}`, 'Content-Type': 'application/json' },
-				body: `{"model":"llama-3.1-sonar-small-128k-online","messages":[{"role":"system","content":"You are an assistant for finding airports. Locate all airports in city, and within a 50-mile radius. For each airport, provide the following details in JSON format: airport_code, airport_name, address, phone_number, number_of_terminals, terminals_with_airlines, website, distance_to_city_center. Ensure all responses are structured as a list of JSON objects. terminals_with_airlines inside the array should contain terminal_name and airlines. If data is insufficient, use available information but maintain the specified structure."},{"role":"user","content":"${message}"}]}`
+				headers: {
+					Authorization: `Bearer ${process.env.PPXL_KEY}`,
+					'Content-Type': 'application/json'
+				},
+				body: `{"model":"sonar","messages":[{"role":"system","content":"You are an assistant for finding airports. Locate all airports in city, and within a 50-mile radius. For each airport, provide the following details in JSON format: airport_code, airport_name, address, phone_number, number_of_terminals, terminals_with_airlines, website, distance_to_city_center. Ensure all responses are structured as a list of JSON objects. terminals_with_airlines inside the array should contain terminal_name and airlines. If data is insufficient, use available information but maintain the specified structure."},{"role":"user","content":"${message}"}]}`
 			}
 			await fetch('https://api.perplexity.ai/chat/completions', options)
 				.then(response => response.json())
