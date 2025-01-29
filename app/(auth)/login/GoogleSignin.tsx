@@ -24,11 +24,11 @@ export default function GoogleSignin() {
 				options: {
 					redirectTo: `${window.location.origin}/api/auth/callback${
 						next ? `?next=${encodeURIComponent(next)}` : ''
-					}`,
-					queryParams: {
-						access_type: 'offline',
-						prompt: 'consent'
-					}
+					}`
+					// queryParams: {
+					// 	access_type: 'offline',
+					// 	prompt: 'consent'
+					// }
 				}
 			})
 
