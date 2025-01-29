@@ -25,7 +25,7 @@ export const loginUser = async ({
 		return {
 			error: true,
 			message:
-				loginUserValidation.error.issues[0]?.message ?? 'An error occured'
+				loginUserValidation.error.issues[0]?.message ?? 'An error occurred'
 		}
 	}
 

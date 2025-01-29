@@ -1,22 +1,19 @@
-import { createClient } from '@/utils/supabase/server'
-import { redirect } from 'next/navigation'
+import { getUser } from '@/queries/user'
 import LogoutButton from './LogoutButton'
 
 export default async function Dashboard() {
-	const supabase = await createClient()
-	const { data, error } = await supabase.auth.getUser()
-	if (error || !data?.user) {
-		redirect('/login')
-	}
+	const user = await getUser()
 
-	console.log('data: ', data)
+	console.log('--------------------------------')
+	console.log('user: ', user)
+	console.log('--------------------------------')
 
 	return (
-		<>
+		<main>
 			<div>Dashboard</div>
-			<p>Hello {data.user.email}</p>
+			<p>Hello {user?.email}</p>
 
 			<LogoutButton />
-		</>
+		</main>
 	)
 }

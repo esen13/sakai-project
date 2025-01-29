@@ -24,7 +24,7 @@ export const resetPasswordFunc = async ({
 	if (!newUserValidation.success) {
 		return {
 			error: true,
-			message: newUserValidation.error.issues[0]?.message ?? 'An error occured'
+			message: newUserValidation.error.issues[0]?.message ?? 'An error occurred'
 		}
 	}
 
@@ -46,6 +46,6 @@ export const resetPasswordFunc = async ({
 	// User successfully created
 	return {
 		success: true,
-		message: 'Password reset successful'
+		message: 'Password reset successfully'
 	}
 }

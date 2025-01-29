@@ -1,8 +1,21 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { useState } from 'react'
 import { logout } from './action'
 
 export default function LogoutButton() {
-	return <Button onClick={() => logout()}>Logout</Button>
+	const [isLoading, setIsLoading] = useState(false)
+
+	const handleLogout = async () => {
+		setIsLoading(true)
+		await logout()
+		setIsLoading(false)
+	}
+
+	return (
+		<Button onClick={handleLogout} disabled={isLoading}>
+			{isLoading ? 'Logging out...' : 'Logout'}
+		</Button>
+	)
 }

@@ -41,6 +41,8 @@ export default function GoogleSignin() {
 			//   description: "There was an error logging in with Google.",
 			//   variant: "destructive",
 			// });
+			console.log('error', error)
+
 			setIsGoogleLoading(false)
 		}
 	}
