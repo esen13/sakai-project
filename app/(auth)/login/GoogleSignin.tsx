@@ -1,16 +1,19 @@
 'use client'
 
+import { Loader2 } from 'lucide-react'
+import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { Suspense, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { ToastAction } from '@/components/ui/toast'
+import { useToast } from '@/hooks/use-toast'
 import { createClient } from '@/utils/supabase/client'
-import { Loader2 } from 'lucide-react'
-import Image from 'next/image'
 
 export default function GoogleSignin() {
 	const [isGoogleLoading, setIsGoogleLoading] = useState<boolean>(false)
 	const supabase = createClient()
+	const { toast } = useToast()
 
 	const searchParams = useSearchParams()
 
@@ -36,11 +39,12 @@ export default function GoogleSignin() {
 				throw error
 			}
 		} catch (error) {
-			// toast({
-			//   title: "Please try again.",
-			//   description: "There was an error logging in with Google.",
-			//   variant: "destructive",
-			// });
+			toast({
+				variant: 'destructive',
+				title: 'Please try again.',
+				description: 'There was an error logging in with Google.',
+				action: <ToastAction altText="Try again">Try again</ToastAction>
+			})
 			console.log('error', error)
 
 			setIsGoogleLoading(false)
