@@ -6,7 +6,7 @@ import { createClient } from '@/utils/supabase/server'
 
 const loginSchema = z.object({
 	email: z.string().email(),
-	password: z.string().min(6) // Adjust the minimum length as needed
+	password: z.string().min(6)
 })
 
 export const loginUser = async ({
@@ -29,21 +29,7 @@ export const loginUser = async ({
 		}
 	}
 
-	// supabase authentication from here
 	const supabase = await createClient()
-
-	///////////////////////////// TEST for redirection ///////////
-	// const { data, error } = await supabase.auth.getUser();
-	// const {
-	//   data: { user },
-	// } = await supabase.auth.getUser();
-
-	// if (user) {
-	//   return redirect("/dashboard");
-	// }
-
-	///////////////////////////////////////////
-
 	const { data, error } = await supabase.auth.signInWithPassword({
 		email,
 		password
@@ -63,14 +49,12 @@ export const loginUser = async ({
 		}
 	}
 
-	// User successfully logged in
 	return {
 		success: true,
-		message: 'Login successful',
+		message: 'Signed in successfully',
 		user: {
 			id: data.user.id,
 			email: data.user.email
-			// Add any other user data you want to return
 		}
 	}
 }

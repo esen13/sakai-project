@@ -65,6 +65,7 @@ export default function Register() {
 				router.push('/register/confirmation')
 			}
 		} catch (error) {
+			console.warn('error', error)
 			setServerError('An unexpected error occurred. Please try again.')
 		} finally {
 			setIsLoading(false)

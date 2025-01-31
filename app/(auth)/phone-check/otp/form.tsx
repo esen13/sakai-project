@@ -11,104 +11,128 @@ import {
 import {
 	Form,
 	FormControl,
+	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
 	FormMessage
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { passwordSchema } from '@/validations/passwordSchema'
+import {
+	InputOTP,
+	InputOTPGroup,
+	InputOTPSlot
+} from '@/components/ui/input-otp'
+import { isCheckLengthNumber, sleep } from '@/helpers'
+import { toast } from '@/hooks/use-toast'
+import { otpSchema } from '@/validations/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { loginUser } from './action'
-import GoogleSignin from './GoogleSignin'
+import { otpCheck } from './action'
 
 const formSchema = z.object({
-	email: z.string().email(),
-	password: passwordSchema
+	otp: otpSchema
 })
 
-export default function LoginForm() {
+export default function OtpForm() {
 	const [serverError, setServerError] = useState<string | null>(null)
-	const [isLoading, setIsLoading] = useState(false) // Add loading state
+	const [isLoading, setIsLoading] = useState<boolean>(false)
+	const phone = useSearchParams().get('phone') || ''
 	const router = useRouter()
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			email: '',
-			password: ''
+			otp: ''
 		}
 	})
 
 	const handleSubmit = async (data: z.infer<typeof formSchema>) => {
 		setServerError(null)
-		setIsLoading(true) // Set loading to true when submission starts
+		setIsLoading(true)
 
 		try {
-			const response = await loginUser({
-				email: data.email,
-				password: data.password
-			})
+			if (isCheckLengthNumber(`+${phone?.trim()}`)) {
+				const response = await otpCheck({
+					phone: `+${phone?.trim()}`,
+					otp: data.otp
+				})
 
-			if (response.error) {
-				setServerError(response.message)
+				if (response.error) {
+					setServerError(response.message)
+				} else {
+					toast({
+						variant: 'success',
+						title: response.message
+					})
+					await sleep(2000)
+					router.push('/dashboard')
+				}
 			} else {
-				router.push('/dashboard')
+				toast({
+					variant: 'destructive',
+					title: 'Invalid phone number',
+					description: 'Please enter a valid phone number'
+				})
 			}
 		} catch (error) {
+			console.warn('error', error)
 			setServerError('An unexpected error occurred. Please try again.')
 		} finally {
-			setIsLoading(false) // Set loading to false when submission ends
+			setIsLoading(false)
 		}
 	}
-
-	const email = form.getValues('email')
 
 	return (
 		<main className="flex justify-center items-center min-h-screen">
 			<Card className="w-[380px]">
 				<CardHeader>
-					<CardTitle>Login</CardTitle>
+					<CardTitle>Login with OTP</CardTitle>
 					<CardDescription>Login to your account</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<Form {...form}>
 						<form
 							onSubmit={form.handleSubmit(handleSubmit)}
-							className="flex flex-col gap-2"
+							className="flex flex-col gap-4 space-y-4"
 						>
 							<FormField
 								control={form.control}
-								name="email"
+								name="otp"
 								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Email</FormLabel>
-										<FormControl>
-											<Input {...field} />
+									<FormItem className="space-y-2">
+										<FormLabel className="">OTP</FormLabel>
+										<FormControl className="mt-6">
+											<InputOTP
+												maxLength={6}
+												{...field}
+												autoFocus
+												pattern="[0-9]*"
+											>
+												<InputOTPGroup>
+													<InputOTPSlot index={0} />
+													<InputOTPSlot index={1} />
+													<InputOTPSlot index={2} />
+													<InputOTPSlot index={3} />
+													<InputOTPSlot index={4} />
+													<InputOTPSlot index={5} />
+												</InputOTPGroup>
+											</InputOTP>
 										</FormControl>
+										{serverError && (
+											<FormDescription className="dark:text-red-500 mt-2">
+												{serverError}
+											</FormDescription>
+										)}
 										<FormMessage />
 									</FormItem>
 								)}
 							/>
-							<FormField
-								control={form.control}
-								name="password"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Password</FormLabel>
-										<FormControl>
-											<Input {...field} type="password" />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
+
 							{serverError && (
 								<p className="text-red-500 text-sm mt-2">{serverError}</p>
 							)}
@@ -119,7 +143,6 @@ export default function LoginForm() {
 									'Sign in'
 								)}
 							</Button>
-							<GoogleSignin />
 						</form>
 					</Form>
 				</CardContent>
@@ -128,17 +151,6 @@ export default function LoginForm() {
 						Don't have an account?{' '}
 						<Link href="/register" className="underline">
 							Sign Up
-						</Link>
-					</div>
-					<div className="text-muted-foreground text-sm">
-						Forgot password?{' '}
-						<Link
-							href={`/forgot-password${
-								email ? `?email=${encodeURIComponent(email)}` : ''
-							}`}
-							className="underline"
-						>
-							Reset my password
 						</Link>
 					</div>
 				</CardFooter>

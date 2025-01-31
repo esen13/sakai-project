@@ -9,11 +9,16 @@ export default async function Dashboard() {
 	console.log('--------------------------------')
 
 	return (
-		<main>
-			<div>Dashboard</div>
-			<p>Hello {user?.email}</p>
+		<main className="px-20 py-10">
+			<div className="flex flex-col gap-4">
+				<h1 className="text-2xl font-bold">Dashboard</h1>
+				<p className="text-lg">Hello, {user?.email}</p>
+				{user?.phone && (
+					<p className="text-sm">Your phone number is {user?.phone}</p>
+				)}
+			</div>
 
-			<LogoutButton />
+			<LogoutButton className="mt-4" />
 		</main>
 	)
 }

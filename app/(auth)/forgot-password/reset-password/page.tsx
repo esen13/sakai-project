@@ -45,7 +45,7 @@ export default function ResetPassword() {
 
 	const handleSubmit = async (data: z.infer<typeof formSchema>) => {
 		setServerError(null)
-		setIsLoading(true) // Set loading to true when submission starts
+		setIsLoading(true)
 
 		try {
 			const response = await resetPasswordFunc({
@@ -57,13 +57,13 @@ export default function ResetPassword() {
 				setServerError(response.message)
 			} else {
 				console.log('ResetPassword page: ', response)
-				// Redirect to the confirmation page
 				router.push('/')
 			}
 		} catch (error) {
+			console.warn(error)
 			setServerError('An unexpected error occurred. Please try again.')
 		} finally {
-			setIsLoading(false) // Set loading to false when submission ends
+			setIsLoading(false)
 		}
 	}
 

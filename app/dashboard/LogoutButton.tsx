@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { logout } from './action'
 
-export default function LogoutButton() {
+export default function LogoutButton({ className }: { className?: string }) {
 	const [isLoading, setIsLoading] = useState(false)
 
 	const handleLogout = async () => {
@@ -14,7 +14,7 @@ export default function LogoutButton() {
 	}
 
 	return (
-		<Button onClick={handleLogout} disabled={isLoading}>
+		<Button onClick={handleLogout} disabled={isLoading} className={className}>
 			{isLoading ? 'Logging out...' : 'Logout'}
 		</Button>
 	)

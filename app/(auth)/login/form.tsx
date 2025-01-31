@@ -18,31 +18,32 @@ import {
 	FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { passwordSchema } from '@/validations/passwordSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { Suspense, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-
-import { forgotPassword } from './action'
+import { loginUser } from './action'
+import GoogleSignin from './GoogleSignin'
 
 const formSchema = z.object({
-	email: z.string().email()
+	email: z.string().email(),
+	password: passwordSchema
 })
 
-function ForgotPasswordContent() {
-	const searchParams = useSearchParams()
-	const router = useRouter()
-
+export default function LoginForm() {
 	const [serverError, setServerError] = useState<string | null>(null)
-	const [isLoading, setIsLoading] = useState(false) // Add loading state
+	const [isLoading, setIsLoading] = useState<boolean>(false)
+	const router = useRouter()
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			email: decodeURIComponent(searchParams.get('email') ?? '')
+			email: '',
+			password: ''
 		}
 	})
 
@@ -51,16 +52,15 @@ function ForgotPasswordContent() {
 		setIsLoading(true)
 
 		try {
-			const response = await forgotPassword({
-				email: data.email
+			const response = await loginUser({
+				email: data.email,
+				password: data.password
 			})
 
 			if (response.error) {
 				setServerError(response.message)
-				// }
 			} else {
-				// Redirect to the dashboard page
-				router.push('/forgot-password/confirmation')
+				router.push('/dashboard')
 			}
 		} catch (error) {
 			console.warn(error)
@@ -69,14 +69,15 @@ function ForgotPasswordContent() {
 			setIsLoading(false)
 		}
 	}
+
+	const email = form.getValues('email')
+
 	return (
 		<main className="flex justify-center items-center min-h-screen">
 			<Card className="w-[380px]">
 				<CardHeader>
-					<CardTitle>Password Reset</CardTitle>
-					<CardDescription>
-						Enter your email address to reset your password
-					</CardDescription>
+					<CardTitle>Login</CardTitle>
+					<CardDescription>Login to your account</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<Form {...form}>
@@ -97,45 +98,61 @@ function ForgotPasswordContent() {
 									</FormItem>
 								)}
 							/>
+							<FormField
+								control={form.control}
+								name="password"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Password</FormLabel>
+										<FormControl>
+											<Input {...field} type="password" />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
 							{serverError && (
 								<p className="text-red-500 text-sm mt-2">{serverError}</p>
 							)}
 							<Button type="submit" disabled={isLoading}>
 								{isLoading ? (
-									<>
-										<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-										Please wait
-									</>
+									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 								) : (
-									'Forget password'
+									'Sign in'
 								)}
 							</Button>
+
+							<GoogleSignin />
 						</form>
 					</Form>
+					<Button
+						className="w-full mt-4"
+						variant="outline"
+						onClick={() => router.push('/phone-check')}
+					>
+						Login with OTP
+					</Button>
 				</CardContent>
-				<CardFooter className="flex flex-col gap-2">
-					<div className="text-muted-foreground text-sm">
-						Remember your password?{' '}
-						<Link href="/login" className="underline">
-							Sign in
-						</Link>
-					</div>
+				<CardFooter className="flex-col gap-2">
 					<div className="text-muted-foreground text-sm">
 						Don't have an account?{' '}
 						<Link href="/register" className="underline">
-							Sign up
+							Sign Up
+						</Link>
+					</div>
+					<div className="text-muted-foreground text-sm">
+						Forgot password?{' '}
+						<Link
+							href={`/forgot-password${
+								email ? `?email=${encodeURIComponent(email)}` : ''
+							}`}
+							className="underline"
+						>
+							Reset my password
 						</Link>
 					</div>
 				</CardFooter>
 			</Card>
 		</main>
-	)
-}
-
-export default function ForgotPassword() {
-	return (
-		<Suspense fallback={<div>Loading...</div>}>
-			<ForgotPasswordContent />
-		</Suspense>
 	)
 }

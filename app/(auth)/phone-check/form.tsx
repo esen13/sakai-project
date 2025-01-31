@@ -1,5 +1,4 @@
 'use client'
-
 import { Button } from '@/components/ui/button'
 import {
 	Card,
@@ -17,32 +16,32 @@ import {
 	FormLabel,
 	FormMessage
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+import { PhoneInput } from '@/components/ui/phone-input'
+import { isCheckLengthNumber, sleep } from '@/helpers'
+import { toast } from '@/hooks/use-toast'
+import { phoneSchema } from '@/validations/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { Suspense, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-
-import { forgotPassword } from './action'
+import { phoneCheck } from './action'
 
 const formSchema = z.object({
-	email: z.string().email()
+	phone: phoneSchema
 })
 
-function ForgotPasswordContent() {
-	const searchParams = useSearchParams()
-	const router = useRouter()
-
+export default function PhoneOtpForm() {
 	const [serverError, setServerError] = useState<string | null>(null)
-	const [isLoading, setIsLoading] = useState(false) // Add loading state
+	const [isLoading, setIsLoading] = useState<boolean>(false)
+	const router = useRouter()
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			email: decodeURIComponent(searchParams.get('email') ?? '')
+			phone: '+996'
 		}
 	})
 
@@ -51,32 +50,42 @@ function ForgotPasswordContent() {
 		setIsLoading(true)
 
 		try {
-			const response = await forgotPassword({
-				email: data.email
-			})
+			if (isCheckLengthNumber(data.phone)) {
+				const response = await phoneCheck({
+					phone: data.phone
+				})
 
-			if (response.error) {
-				setServerError(response.message)
-				// }
+				if (response.error) {
+					setServerError(response.message)
+				} else {
+					toast({
+						variant: 'success',
+						title: response.message
+					})
+					await sleep(2000)
+					router.push(`/phone-check/otp?phone=${data.phone}`)
+				}
 			} else {
-				// Redirect to the dashboard page
-				router.push('/forgot-password/confirmation')
+				toast({
+					variant: 'destructive',
+					title: 'Invalid phone number',
+					description: 'Please enter a valid phone number'
+				})
 			}
 		} catch (error) {
-			console.warn(error)
+			console.warn('error', error)
 			setServerError('An unexpected error occurred. Please try again.')
 		} finally {
 			setIsLoading(false)
 		}
 	}
+
 	return (
 		<main className="flex justify-center items-center min-h-screen">
 			<Card className="w-[380px]">
 				<CardHeader>
-					<CardTitle>Password Reset</CardTitle>
-					<CardDescription>
-						Enter your email address to reset your password
-					</CardDescription>
+					<CardTitle>Login with OTP</CardTitle>
+					<CardDescription>Login to your account</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<Form {...form}>
@@ -86,56 +95,43 @@ function ForgotPasswordContent() {
 						>
 							<FormField
 								control={form.control}
-								name="email"
+								name="phone"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Email</FormLabel>
+										<FormLabel>Phone</FormLabel>
 										<FormControl>
-											<Input {...field} />
+											<PhoneInput
+												value={field.value}
+												onChange={field.onChange}
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>
 								)}
 							/>
+
 							{serverError && (
 								<p className="text-red-500 text-sm mt-2">{serverError}</p>
 							)}
 							<Button type="submit" disabled={isLoading}>
 								{isLoading ? (
-									<>
-										<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-										Please wait
-									</>
+									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 								) : (
-									'Forget password'
+									'Continue'
 								)}
 							</Button>
 						</form>
 					</Form>
 				</CardContent>
-				<CardFooter className="flex flex-col gap-2">
-					<div className="text-muted-foreground text-sm">
-						Remember your password?{' '}
-						<Link href="/login" className="underline">
-							Sign in
-						</Link>
-					</div>
+				<CardFooter className="flex-col gap-2">
 					<div className="text-muted-foreground text-sm">
 						Don't have an account?{' '}
 						<Link href="/register" className="underline">
-							Sign up
+							Sign Up
 						</Link>
 					</div>
 				</CardFooter>
 			</Card>
 		</main>
-	)
-}
-
-export default function ForgotPassword() {
-	return (
-		<Suspense fallback={<div>Loading...</div>}>
-			<ForgotPasswordContent />
-		</Suspense>
 	)
 }
