@@ -34,7 +34,7 @@ const formSchema = z
 	})
 	.and(passwordMatchSchema)
 
-export default function Register() {
+export default function Page() {
 	const [serverError, setServerError] = useState<string | null>(null)
 	const [isLoading, setIsLoading] = useState(false)
 	const router = useRouter()

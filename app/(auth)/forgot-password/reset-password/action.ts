@@ -4,7 +4,7 @@ import { z } from 'zod'
 
 import { createClient } from '@/utils/supabase/server'
 
-export const resetPasswordFunc = async ({
+export const resetPassword = async ({
 	password,
 	passwordConfirm
 }: {

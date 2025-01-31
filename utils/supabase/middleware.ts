@@ -15,6 +15,7 @@ export async function updateSession(request: NextRequest) {
 					return request.cookies.getAll()
 				},
 				setAll(cookiesToSet) {
+					// eslint-disable-next-line @typescript-eslint/no-unused-vars
 					cookiesToSet.forEach(({ name, value, options }) =>
 						request.cookies.set(name, value)
 					)
@@ -45,7 +46,7 @@ export async function updateSession(request: NextRequest) {
 		!request.nextUrl.pathname.startsWith('/register') &&
 		!request.nextUrl.pathname.startsWith('/api') &&
 		!request.nextUrl.pathname.startsWith('/error') &&
-		!request.nextUrl.pathname.startsWith('/phone-check') &&
+		!request.nextUrl.pathname.startsWith('/phone') &&
 		!request.nextUrl.pathname.startsWith('/forgot-password')
 	) {
 		// no user, potentially respond by redirecting the user to the login page

@@ -128,7 +128,7 @@ export default function LoginForm() {
 					<Button
 						className="w-full mt-4"
 						variant="outline"
-						onClick={() => router.push('/phone-check')}
+						onClick={() => router.push('/phone')}
 					>
 						Login with OTP
 					</Button>

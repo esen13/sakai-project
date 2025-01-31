@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Mail } from 'lucide-react'
 
-export default function RegistrationConfirmation() {
+export default function Confirmation() {
 	return (
 		<main className="flex justify-center items-center min-h-screen">
 			<Card className="w-[540px] text-center">

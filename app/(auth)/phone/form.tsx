@@ -33,7 +33,7 @@ const formSchema = z.object({
 	phone: phoneSchema
 })
 
-export default function PhoneOtpForm() {
+export default function PhoneForm() {
 	const [serverError, setServerError] = useState<string | null>(null)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const router = useRouter()
@@ -63,7 +63,7 @@ export default function PhoneOtpForm() {
 						title: response.message
 					})
 					await sleep(2000)
-					router.push(`/phone-check/otp?phone=${data.phone}`)
+					router.push(`/phone/otp?phone=${data.phone}`)
 				}
 			} else {
 				toast({

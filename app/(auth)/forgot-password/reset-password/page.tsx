@@ -23,7 +23,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { resetPasswordFunc } from './action'
+import { resetPassword } from './action'
 
 const formSchema = z.object({
 	password: z.string().min(6),
@@ -48,7 +48,7 @@ export default function ResetPassword() {
 		setIsLoading(true)
 
 		try {
-			const response = await resetPasswordFunc({
+			const response = await resetPassword({
 				password: data.password,
 				passwordConfirm: data.passwordConfirm
 			})

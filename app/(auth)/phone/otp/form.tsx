@@ -56,9 +56,9 @@ export default function OtpForm() {
 		setIsLoading(true)
 
 		try {
-			if (isCheckLengthNumber(`+${phone?.trim()}`)) {
+			if (isCheckLengthNumber(phone?.trim())) {
 				const response = await otpCheck({
-					phone: `+${phone?.trim()}`,
+					phone: phone?.trim(),
 					otp: data.otp
 				})
 
