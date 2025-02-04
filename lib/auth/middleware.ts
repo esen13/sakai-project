@@ -6,7 +6,7 @@ export type ActionState = {
 	fieldData?: Record<string, any> //eslint-disable-line
 	[key: string]: any //eslint-disable-line
 }
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ValidatedActionFunction<S extends z.ZodType<any, any>, T> = (
 	//eslint-disable-line
 	data: z.infer<S>,
