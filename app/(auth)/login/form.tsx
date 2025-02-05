@@ -23,7 +23,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { loginUser } from './action'
@@ -65,7 +65,6 @@ export default function LoginForm() {
 		} catch (error) {
 			console.warn(error)
 			setServerError('An unexpected error occurred. Please try again.')
-		} finally {
 			setIsLoading(false)
 		}
 	}
@@ -122,7 +121,11 @@ export default function LoginForm() {
 								)}
 							</Button>
 
-							<GoogleSignin />
+							<Suspense
+								fallback={<Loader2 className="my-10 h-4 w-4 animate-spin" />}
+							>
+								<GoogleSignin />
+							</Suspense>
 						</form>
 					</Form>
 					<Button

@@ -52,7 +52,7 @@ export default function GoogleSignin() {
 	}
 
 	return (
-		<Suspense fallback={<div>Loading google button...</div>}>
+		<Suspense fallback={<Loader2 className="my-10 h-4 w-4 animate-spin" />}>
 			<Button
 				type="button"
 				variant="outline"
