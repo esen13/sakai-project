@@ -1,8 +1,8 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { logout } from '@/queries/user'
 import { useState } from 'react'
-import { logout } from './action'
 
 export default function LogoutButton({ className }: { className?: string }) {
 	const [isLoading, setIsLoading] = useState(false)
